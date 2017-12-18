@@ -1,0 +1,50 @@
+﻿@model Bitventure_Assessment.Models.ViewImportData
+<h2>Master Grid</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Account Holder</th>
+        <th scope="col">Branch Code</th>
+        <th scope="col">Account Number</th>
+        <th scope="col">Account Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var record in Model.MasterGrid)
+    {
+        // Todo: use ENUMS instead
+        var accountType = "";
+        switch (record.AccountType)
+        {
+            case "1":
+                accountType = "Current / Cheque";
+                break;
+            case "2":
+                accountType = "Savings";
+                break;
+            default:
+                break;
+        }
+        <tr class="master-grid-data" data-accountnumber="@record.AccountNumber">
+            <td data-accountnumber="@record.AccountNumber">@record.AccountHolder</td>
+            <td data-accountnumber="@record.AccountNumber">@record.BranchCode</td>
+            <td data-accountnumber="@record.AccountNumber">@record.AccountNumber</td>
+            <td data-accountnumber="@record.AccountNumber">@accountType</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div class="detailed-results"></div>
+
+<script>
+    $(".master-grid-data").on("click", function (e) {
+        console.log("hello");
+        console.log($(e.target));
+        var targetLink = $(e.target)[0].dataset.accountnumber;
+        $(".loading").toggle();
+        $(".detailed-results").load("/home/ViewImportDetails?accountnumber=" + targetLink, function () {
+            $(".loading").toggle();
+        });
+    });
+</script>

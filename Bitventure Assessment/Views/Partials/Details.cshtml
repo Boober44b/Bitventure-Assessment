@@ -1,0 +1,63 @@
+﻿@using System.Globalization
+@model IEnumerable<Bitventure_Assessment.Models.ReportData>
+<h2>Detail Grid</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Transaction Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Status</th>
+            <th scope="col">Effective Status Date</th>
+            <th scope="col">Time Breached</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model)
+        {
+            string status;
+            var timeBreached = "No";
+            var timeColor = "green";
+            decimal amount;
+            var amountColor = "";
+            DateTime transactionDate;
+            DateTime effectiveDate;
+            // Todo: use ENUMS instead
+            switch (record.Status)
+            {
+                case "00":
+                    status = "Successful";
+                    break;
+                case "30":
+                    status = "Disputed";
+                    break;
+                default:
+                    status = "Failed";
+                    break;
+
+            }
+            DateTime.TryParse(record.TransactionDate, out transactionDate);
+            DateTime.TryParse(record.EffectiveStatusDate, out effectiveDate);
+
+            if ((effectiveDate - transactionDate).TotalDays >= 7)
+            {
+                timeBreached = "Yes";
+                timeColor = "yellow";
+            }
+
+            decimal.TryParse(record.Amount, NumberStyles.Any, new CultureInfo("en-US"), out amount);
+
+            if (amount > 500)
+            {
+                amountColor = "blue";
+            }
+
+            <tr>
+                <td>@record.TransactionDate</td>
+                <td style="background-color: @amountColor">@record.Amount</td>
+                <td>@status</td>
+                <td>@record.EffectiveStatusDate</td>
+                <td style="background-color: @timeColor">@timeBreached</td>
+            </tr>
+        }
+    </tbody>
+</table>

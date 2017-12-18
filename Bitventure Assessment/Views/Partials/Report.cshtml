@@ -1,0 +1,66 @@
+﻿@using System.Globalization
+@model IEnumerable<Bitventure_Assessment.Models.ImportReportData>
+    
+<h2>Report</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Branch Code</th>
+            <th scope="col">Account Type</th>
+            <th scope="col">Status</th>
+            <th scope="col">Total Count</th>
+            <th scope="col">Total Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model)
+        {
+            // Todo: use ENUMS instead
+            var accountType = "";
+            string status;
+            decimal amount;
+            var amountColor = "";
+            switch (record.AccountType)
+            {
+                case "1":
+                    accountType = "Current / Cheque";
+                    break;
+                case "2":
+                    accountType = "Savings";
+                    break;
+                default:
+                    break;
+            }
+
+            // Todo: use ENUMS instead
+            switch (record.Status)
+            {
+                case "00":
+                    status = "Successful";
+                    break;
+                case "30":
+                    status = "Disputed";
+                    break;
+                default:
+                    status = "Failed";
+                    break;
+
+            }
+
+            decimal.TryParse(record.Amount, NumberStyles.Any, new CultureInfo("en-US"), out amount);
+
+            if (amount > 500)
+            {
+                amountColor = "blue";
+            }
+
+            <tr>
+                <td>@record.BranchCode</td>
+                <td>@accountType</td>
+                <td>@status</td>
+                <td>@record.Count</td>
+                <td style="background-color: @amountColor">@record.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>

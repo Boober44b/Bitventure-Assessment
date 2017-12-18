@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <div class="row table-bordered">
+        <div class="col-md-2" style="border-right: 1px solid #dddddd;">
+            <a href="#" data-actionurl="Import" class="actionlink">Import File</a>
+            <br/>
+            <a href="#" data-actionurl="ViewImports" class="actionlink">View Imports</a>
+            <br/>
+            <a href="#" data-actionurl="Report" class="actionlink">Report</a>
+        </div> 
+        <div class="col-md-10">
+            <div class="loading" style="display: none;">
+                <img src="~/Content/spinner.gif" height="50" width="50" alt="loading"/>
+            </div>
+            <div class="content-area">
+                Select an action on the left.
+            </div>
+        </div> 
+    </div>
+</div>
+
